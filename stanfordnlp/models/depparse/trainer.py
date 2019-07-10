@@ -49,6 +49,7 @@ class Trainer(BaseTrainer):
         word, word_mask, wordchars, wordchars_mask, upos, xpos, ufeats, pretrained, lemma, head, deprel = inputs
 
         if eval:
+            self.model.training = True
             self.model.eval()
         else:
             self.model.train()
