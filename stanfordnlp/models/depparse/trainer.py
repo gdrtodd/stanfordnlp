@@ -71,7 +71,7 @@ class Trainer(BaseTrainer):
         batch_size = word.size(0)
         loss, preds = self.model(word, word_mask, wordchars, wordchars_mask, upos, xpos, ufeats, pretrained, lemma, head, deprel, word_orig_idx, sentlens, wordlens)
         
-        print("IN TRAINER.PREDICT, LOSS = {}".format(loss.item()))
+        print("IN TRAINER.PREDICT, LOSS = {}".format(loss.data.item()))
 
         head_seqs = [chuliu_edmonds_one_root(adj[:l, :l])[1:] for adj, l in zip(preds[0], sentlens)] # remove attachment for the root
         deprel_seqs = [self.vocab['deprel'].unmap([preds[1][i][j+1][h] for j, h in enumerate(hs)]) for i, hs in enumerate(head_seqs)]
