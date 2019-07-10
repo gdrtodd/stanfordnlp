@@ -26,7 +26,10 @@ class DepparseProcessor(UDProcessor):
             doc, self.config['batch_size'], self.config, self.pretrain, vocab=self.vocab, evaluation=True,
             sort_during_eval=True)
         preds = []
+        print("Running through {} batches".format(len(batch)))
         for i, b in enumerate(batch):
+            loss = self.trainer.update(b, eval=True)
+            print("In processor, loss = {}".format(loss))
             preds += self.trainer.predict(b)
         preds = unsort(preds, batch.data_orig_idx)
         batch.conll.set(['head', 'deprel'], [y for x in preds for y in x])
