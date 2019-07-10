@@ -48,13 +48,14 @@ class Trainer(BaseTrainer):
         inputs, orig_idx, word_orig_idx, sentlens, wordlens = unpack_batch(batch, self.use_cuda)
         word, word_mask, wordchars, wordchars_mask, upos, xpos, ufeats, pretrained, lemma, head, deprel = inputs
 
-        print("In trainer.update, setting model.training to TRUE")
-        self.model.training = True
         if eval:
             self.model.eval()
         else:
             self.model.train()
             self.optimizer.zero_grad()
+        print("In trainer.update, setting model.training to TRUE")
+        self.model.training = True
+        print("model.training: ", self.model.training)
         loss, _ = self.model(word, word_mask, wordchars, wordchars_mask, upos, xpos, ufeats, pretrained, lemma, head, deprel, word_orig_idx, sentlens, wordlens)
         loss_val = loss.data.item()
         if eval:
