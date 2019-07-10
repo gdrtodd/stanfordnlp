@@ -159,6 +159,7 @@ class Parser(nn.Module):
         preds = []
 
         if self.training:
+            print("In model.py, doing actual loss calc.")
             unlabeled_scores = unlabeled_scores[:, 1:, :] # exclude attachment for the root symbol
             unlabeled_scores = unlabeled_scores.masked_fill(word_mask.unsqueeze(1), -float('inf'))
             unlabeled_target = head.masked_fill(word_mask[:, 1:], -1)
@@ -185,6 +186,7 @@ class Parser(nn.Module):
 
             loss /= wordchars.size(0) # number of words
         else:
+            print("In model.py, setting loss = 0")
             loss = 0
             preds.append(F.log_softmax(unlabeled_scores, 2).detach().cpu().numpy())
             preds.append(deprel_scores.max(3)[1].detach().cpu().numpy())
